@@ -1,0 +1,834 @@
+<!DOCTYPE html><html lang="uk"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Комп'ютерна Інженерія | Hardware & New Computing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a0a2e 0%, #0a0a14 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Неоновий фон */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(75, 0, 130, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
+            z-index: -2;
+        }
+        
+        /* Технологічна сітка */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Навігація */
+        header {
+            background: rgba(10, 10, 20, 0.95);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #8a2be2;
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 0 15px #8a2be2;
+            background: linear-gradient(45deg, #8a2be2, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(138, 43, 226, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+            color: #00ffff;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, rgba(26, 10, 46, 0.9), rgba(10, 10, 20, 0.9));
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 20px #8a2be2;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            color: #e6e6e6;
+            font-weight: 500;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #8a2be2, #9400d3);
+            color: #ffffff;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(138, 43, 226, 0.6);
+        }
+        
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            color: #ffffff;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px #8a2be2;
+            font-weight: 800;
+            background: linear-gradient(45deg, #8a2be2, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-title p {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cccccc;
+            font-size: 1.2rem;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .card {
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s;
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.4);
+            border-color: rgba(0, 255, 255, 0.6);
+        }
+        
+        .card-content {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card h3 {
+            color: #ffffff;
+            margin-bottom: 1.2rem;
+            text-shadow: 0 0 10px #8a2be2;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .card p {
+            color: #cccccc;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            color: #8a2be2;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px #8a2be2;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(30, 30, 50, 0.7);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        th, td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+        }
+        
+        th {
+            background: linear-gradient(45deg, rgba(138, 43, 226, 0.8), rgba(148, 0, 211, 0.8));
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(40, 40, 60, 0.5);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, rgba(10, 10, 20, 0.95), rgba(26, 10, 46, 0.95));
+            color: #ffffff;
+            padding: 4rem 0;
+            text-align: center;
+            border-top: 2px solid #8a2be2;
+            box-shadow: 0 -5px 20px rgba(138, 43, 226, 0.3);
+            position: relative;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            list-style: none;
+            margin: 2rem 0;
+        }
+        
+        .footer-links li {
+            margin: 0 1.5rem;
+        }
+        
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 600;
+        }
+        
+        .footer-links a:hover {
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            color: #aaaaaa;
+            font-size: 0.9rem;
+        }
+        
+        .page {
+            display: none;
+            padding: 3rem 0;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .topic-section {
+            margin-bottom: 3rem;
+        }
+        
+        .topic-title {
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            text-shadow: 0 0 10px #8a2be2;
+            font-weight: 700;
+        }
+        
+        .topic-icon {
+            margin-right: 0.8rem;
+            font-size: 1.6rem;
+        }
+        
+        .topic-content {
+            background: rgba(30, 30, 50, 0.7);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .code-block {
+            background: rgba(10, 10, 20, 0.9);
+            color: #00ffff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            font-size: 1rem;
+        }
+        
+        .example-list {
+            margin: 1.5rem 0 1.5rem 2.5rem;
+        }
+        
+        .example-list li {
+            margin-bottom: 0.8rem;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+        
+        /* Відео контейнер */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            background: #000;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .yt-fallback {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid red;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .yt-fallback:hover {
+            background: rgba(255, 0, 0, 0.4);
+        }
+        
+        /* Анімація */
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(138, 43, 226, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.5); }
+        }
+        
+        .card, .btn, .topic-content, table {
+            animation: glow 4s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hero h1 { font-size: 2.5rem; }
+            .cards { grid-template-columns: 1fr; }
+        }
+        
+        .highlight {
+            background: linear-gradient(45deg, #00ffff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(0, 255, 255, 0.05));
+            padding: 4rem 0;
+            text-align: center;
+            border-radius: 20px;
+            margin: 3rem 0;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .testimonial {
+            background: rgba(30, 30, 50, 0.7);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border-left: 5px solid #00ffff;
+            font-style: italic;
+        }
+    </style></head><body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">HARD<span class="highlight">WARE</span></div>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showPage('home')">Головна</a></li>
+                    <li><a href="#" onclick="showPage('circuitry')">Схемотехніка</a></li>
+                    <li><a href="#" onclick="showPage('embedded')">Вбудовані системи</a></li>
+                    <li><a href="#" onclick="showPage('iot')">IoT</a></li>
+                    <li><a href="#" onclick="showPage('robotics')">Робототехніка</a></li>
+                    <li><a href="#" onclick="showPage('architecture')">Архітектура</a></li>
+                    <li><a href="#" onclick="showPage('tools')">Інструменти</a></li>
+                    <li><a href="#" onclick="showPage('info')">Інформація</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="page active">
+        <div class="hero">
+            <div class="container">
+                <h1>СТВОРЮЙ <span class="highlight">ФІЗИЧНИЙ</span> ІНТЕЛЕКТ</h1>
+                <p>Навчись проєктувати процесори, програмувати мікроконтролери та створювати роботів. "Залізо" — це основа сучасного світу.</p>
+                <a href="#" class="btn" onclick="showPage('circuitry')">ПОЧАТИ ПРОЄКТУВАТИ</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="cta-section">
+                <h2>ЧОМУ "ЗАЛІЗО"?</h2>
+                <p>Програмне забезпечення не існує без апаратної частини. Стань інженером, який розуміє систему повністю.</p>
+            </div>
+            
+            <div class="section-title">
+                <h2>НАПРЯМИ ПІДГОТОВКИ</h2>
+                <p>Від закону Ома до квантових обчислень</p>
+            </div>
+            
+            <div class="cards">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-icon">🔌</div>
+                        <h3>Схемотехніка</h3>
+                        <p>Основи електроніки, логічні елементи, створення друкованих плат (PCB).</p>
+                        <a href="#" class="btn" onclick="showPage('circuitry')">ДЕТАЛЬНІШЕ</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-icon">💾</div>
+                        <h3>Вбудовані системи</h3>
+                        <p>Програмування мікроконтролерів (STM32, AVR, ESP). C/C++ на низькому рівні.</p>
+                        <a href="#" class="btn" onclick="showPage('embedded')">ДЕТАЛЬНІШЕ</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-icon">📡</div>
+                        <h3>IoT (Інтернет речей)</h3>
+                        <p>Розумні будинки, сенсори, передача даних через Wi-Fi, Bluetooth, LoRaWAN.</p>
+                        <a href="#" class="btn" onclick="showPage('iot')">ДЕТАЛЬНІШЕ</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-icon">🤖</div>
+                        <h3>Робототехніка</h3>
+                        <p>Кінематика, сервоприводи, сенсори та штучний інтелект в реальних машинах.</p>
+                        <a href="#" class="btn" onclick="showPage('robotics')">ДЕТАЛЬНІШЕ</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-icon">🏗️</div>
+                        <h3>Архітектура ЕОМ</h3>
+                        <p>Як працює процесор? FPGA, ASIC, конвеєризація та високопродуктивні обчислення.</p>
+                        <a href="#" class="btn" onclick="showPage('architecture')">ДЕТАЛЬНІШЕ</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-icon">🛠️</div>
+                        <h3>Інструментарій</h3>
+                        <p>Altium Designer, MATLAB, паяльні станції, осцилографи та 3D-друк.</p>
+                        <a href="#" class="btn" onclick="showPage('tools')">ДЕТАЛЬНІШЕ</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <p>"Магія коду стає реальною тільки тоді, коли світлодіод починає блимати під твоїм контролем."</p>
+                <p><strong>- Дмитро, Embedded Engineer</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="circuitry" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>СХЕМОТЕХНІКА ТА ЕЛЕКТРОНІКА</h2>
+                <p>Фундамент для будь-якого Hardware-інженера</p>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">⚡</span> ЩО МИ ВИВЧАЄМО</h3>
+                <div class="topic-content">
+                    <p>Схемотехніка — це мистецтво поєднання електронних компонентів для створення функціональних пристроїв.</p>
+                    <ul class="example-list">
+                        <li>Закон Ома та правила Кірхгофа — база для розрахунку кіл.</li>
+                        <li>Напівпровідники: діоди, транзистори (MOSFET, BJT).</li>
+                        <li>Цифрова логіка: AND, OR, NOT, тригери, лічильники.</li>
+                        <li>Проєктування друкованих плат (PCB Design).</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">🔗</span> КОРИСНІ ПОСИЛАННЯ</h3>
+                <div class="topic-content">
+                    <p>Додаткові матеріали:</p>
+                    <ul class="example-list">
+                        <li><a href="https://uk.wikipedia.org/wiki/%D0%9A%D0%BE%D0%BC%D0%BF%27%D1%8E%D1%82%D0%B5%D1%80%D0%BD%D0%B0_%D1%96%D0%BD%D0%B6%D0%B5%D0%BD%D0%B5%D1%80%D1%96%D1%8F" target="_blank" style="color: #00ffff; text-decoration: none;">Вікіпедія: Комп'ютерна інженерія</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">🎬</span> ВІДЕО: ЯК ПРАЦЮЄ ТРАНЗИСТОР</h3>
+                <div class="topic-content">
+                    <div class="video-container">
+                         <iframe src="https://www.youtube.com/embed/7ukDKVHnac4" title="Transistors" allowfullscreen></iframe>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=7ukDKVHnac4" target="_blank" class="yt-fallback">📺 Переглянути на YouTube (якщо відео не працює)</a>
+                    <p style="margin-top:10px;">Без транзисторів не існувало б сучасних комп'ютерів. Це відео пояснює принцип їх роботи.</p>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h2>ХОЧЕШ СТВОРЮВАТИ ВЛАСНІ ГАДЖЕТИ?</h2>
+                <a href="#" class="btn" onclick="showPage('home')">ЗАПИСАТИСЯ</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="embedded" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>ВБУДОВАНІ СИСТЕМИ (EMBEDDED)</h2>
+                <p>Програмування, що вдихає життя в залізо</p>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">💾</span> МІКРОКОНТРОЛЕРИ</h3>
+                <div class="topic-content">
+                    <p>Ми не просто пишемо код, ми керуємо напругою на ніжках процесора. Це "bare metal" програмування.</p>
+                    
+                    <h4>Основні платформи:</h4>
+                    <div class="code-block">
+                        // Приклад коду C++ для STM32
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+                        HAL_Delay(1000);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+                    </div>
+                    <p>Ви навчитесь працювати з регістрами, перериваннями та інтерфейсами передачі даних (I2C, SPI, UART).</p>
+                </div>
+            </div>
+
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">🎬</span> ВІДЕО: C++ ДЛЯ EMBEDDED</h3>
+                <div class="topic-content">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/5l9nxwh5Wiw" title="C++ Intro" allowfullscreen></iframe>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=5l9nxwh5Wiw" target="_blank" class="yt-fallback">📺 Переглянути на YouTube</a>
+                    <p style="margin-top:10px;">C та C++ — це основні мови для розробки під мікроконтролери через їх швидкодію та контроль пам'яті.</p>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <h2>СТАНЬ МАЙСТРОМ STM32</h2>
+                <a href="#" class="btn" onclick="showPage('home')">ПРИЄДНАТИСЯ</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="iot" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>INTERNET OF THINGS (IoT)</h2>
+                <p>Мережа фізичних об'єктів, оснащених сенсорами</p>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">📡</span> ЕКОСИСТЕМА IoT</h3>
+                <div class="topic-content">
+                    <p>IoT поєднує embedded-розробку з передачею даних. Ваші пристрої стають частиною глобальної мережі.</p>
+                    <ul class="example-list">
+                        <li><strong>Сенсори:</strong> Температура, вологість, GPS, акселерометри.</li>
+                        <li><strong>Зв'язок:</strong> Wi-Fi (ESP32), Bluetooth BLE, ZigBee, LoRa.</li>
+                        <li><strong>Протоколи:</strong> MQTT, CoAP.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">🎬</span> ВІДЕО: ОСНОВИ IOT</h3>
+                <div class="topic-content">
+                    <div class="video-container">
+                         <iframe src="https://www.youtube.com/embed/6mBO2vqLv38" title="What is IoT" allowfullscreen></iframe>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=6mBO2vqLv38" target="_blank" class="yt-fallback">📺 Переглянути на YouTube</a>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <h2>БУДУЙ РОЗУМНІ МІСТА</h2>
+                <a href="#" class="btn" onclick="showPage('home')">ДІЗНАТИСЯ БІЛЬШЕ</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="robotics" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>РОБОТОТЕХНІКА</h2>
+                <p>Мехатроніка, штучний інтелект та автоматизація</p>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">🎬</span> ВІДЕО: МАЙБУТНЄ РОБОТОТЕХНІКИ</h3>
+                <div class="topic-content">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/2YSlGxqF4Fc?start=13" title="Robotics" allowfullscreen></iframe>
+                    </div>
+                    <a href="https://youtu.be/2YSlGxqF4Fc?t=13" target="_blank" class="yt-fallback">📺 Переглянути на YouTube (якщо блокується)</a>
+                    <p style="margin-top:10px;">Поглянь на сучасні підходи до створення автономних систем.</p>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">🔍</span> СКЛАДОВІ РОБОТА</h3>
+                <div class="topic-content">
+                    <p>Робототехніка — це синергія механіки, електроніки та програмування.</p>
+                    <ul class="example-list">
+                        <li><strong>Механіка:</strong> Корпуси, приводи, маніпулятори (3D-моделювання).</li>
+                        <li><strong>Сприйняття:</strong> Комп'ютерний зір (OpenCV), лідари.</li>
+                        <li><strong>Керування:</strong> PID-регулятори, нейромережі.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <h2>СТВОРИ СВОГО ПЕРШОГО РОБОТА</h2>
+                <a href="#" class="btn" onclick="showPage('home')">РОЗПОЧАТИ</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>АРХІТЕКТУРА КОМП'ЮТЕРНИХ СИСТЕМ</h2>
+                <p>Як працює процесор зсередини?</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <p>Вивчення того, як транзистори перетворюються на логіку, а логіка — на обчислення.</p>
+                    
+                    <h3>Ключові теми:</h3>
+                    <ul class="example-list">
+                        <li>Архітектури: x86, ARM, RISC-V.</li>
+                        <li>Пам'ять: Регістри, Кеш (L1/L2), RAM.</li>
+                        <li>FPGA (ПЛІС): Програмовані логічні матриці (Verilog/VHDL).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tools" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>ІНСТРУМЕНТИ ТА МОВИ HARDWARE</h2>
+                <p>Арсенал інженера-розробника апаратури</p>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">🛠️</span> МОВИ ПРОГРАМУВАННЯ</h3>
+                <div class="topic-content">
+                    <p>Для розробки заліза використовуються C/C++ (для мікроконтролерів) та Python (для скриптів, тестування та AI на Raspberry Pi).</p>
+                    
+                    <h4>Відео: Python для інженерів</h4>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/M9kT_xt5xjo" title="Python Intro" allowfullscreen></iframe>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=M9kT_xt5xjo" target="_blank" class="yt-fallback">📺 Переглянути на YouTube</a>
+                </div>
+            </div>
+            
+            <div class="topic-section">
+                <h3 class="topic-title"><span class="topic-icon">🎥</span> БОНУС: ПРЕЗЕНТАЦІЯ ПРОЄКТІВ</h3>
+                <div class="topic-content">
+                    <p>Як якісно зняти відео про свій інженерний винахід:</p>
+                     <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/BDLjp52CpS4" title="Video Shooting" allowfullscreen></iframe>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=BDLjp52CpS4" target="_blank" class="yt-fallback">📺 Переглянути на YouTube</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="info" class="page">
+        <div class="container">
+            <div class="section-title">
+                <h2>ІНФОРМАЦІЯ ПРО ПРОЄКТ</h2>
+                <p>Хто створив цей сайт та використані джерела</p>
+            </div>
+
+            <div class="cards" style="justify-content: center; display: flex;">
+                <div class="card" style="max-width: 600px; width: 100%;">
+                    <div class="card-content" style="text-align: center;">
+                        <div class="card-icon">👨‍💻</div>
+                        <h3>АВТОР РОБОТИ</h3>
+                        <p style="font-size: 1.5rem; color: #ffffff; margin-bottom: 0.5rem;">Дубченко Антон</p>
+                        <p style="font-size: 1.2rem; color: #00ffff;">Група 2КН-25б</p>
+                        <p style="margin-top: 1rem; color: #aaaaaa;">Факультет інформаційних технологій та комп'ютерної інженерії</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-section" style="margin-top: 4rem;">
+                <h3 class="topic-title"><span class="topic-icon">📚</span> ВИКОРИСТАНІ ДЖЕРЕЛА</h3>
+                <div class="topic-content">
+                    <ul class="example-list">
+                        <li><a href="https://uk.wikipedia.org/wiki/Комп'ютерна_інженерія" target="_blank" style="color: #00ffff; text-decoration: none;">Вікіпедія: Комп'ютерна інженерія</a></li>
+                        <li><a href="https://uk.wikipedia.org/wiki/Вбудована_система" target="_blank" style="color: #00ffff; text-decoration: none;">Вікіпедія: Вбудовані системи</a></li>
+                        <li><a href="https://www.youtube.com/" target="_blank" style="color: #00ffff; text-decoration: none;">YouTube: Освітні матеріали (канали електроніки та програмування)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">HARD<span class="highlight">WARE</span> ENG</div>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showPage('home')">Головна</a></li>
+                    <li><a href="#" onclick="showPage('circuitry')">Схемотехніка</a></li>
+                    <li><a href="#" onclick="showPage('embedded')">Embedded</a></li>
+                    <li><a href="#" onclick="showPage('iot')">IoT</a></li>
+                    <li><a href="#" onclick="showPage('info')">Інфо</a></li>
+                </ul>
+                <div class="copyright">
+                    &copy; 2024 Кафедра Комп'ютерної Інженерії. Створюємо майбутнє сьогодні.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+            return false;
+        }
+    </script></body></html>
